@@ -1,0 +1,15 @@
+{
+    "name": "np/router",
+    "description": "The simple router PHP",
+    "type": "library",
+    "require": {
+        "n": "0.1.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nguyen Phuong",
+            "email": "nguyenphuong.2661999@gmail.com"
+        }
+    ]
+}
