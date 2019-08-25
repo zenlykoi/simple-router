@@ -9,7 +9,7 @@ require_once "router.php";
 ```php
 $route = new router;
 $route->get('/',function(){
-	echo 'GET method';
+     	echo 'GET method';
 });
 $route->post('/',function(){
 	echo 'POST method';
@@ -22,6 +22,15 @@ $route->patch('/',function(){
 });
 $route->delete('/',function(){
 	echo 'DELETE method';
+});
+$route->option('/',function(){
+	echo 'OPTION method';
+});
+```
+## data in router
+```php
+$route->get('/post/{id}',function($data){
+	echo 'This is post page and id = '.$data['id'];
 });
 ```
 ## return view
