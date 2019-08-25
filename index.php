@@ -7,6 +7,7 @@ function loadView($view){
 }
 
 $route = new router;
+
 $route->get('/',function(){
 	echo 'GET method';
 });
@@ -21,6 +22,13 @@ $route->patch('/',function(){
 });
 $route->delete('/',function(){
 	echo 'DELETE method';
+});
+$route->option('/',function(){
+	echo 'OPTION method';
+});
+
+$route->get('/post/{id}',function($data){
+	echo 'This is post page and id = '.$data['id'];
 });
 
 // $route->setCallbackError(function(){
