@@ -26,6 +26,7 @@
     "support": {
         "source": "https://github.com/zenlykoi/simple-router-PHP/issues"
     },
+    "minimum-stability": "stable",
     "require": {
         "php": ">=5.4.0"
     },
