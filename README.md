@@ -1,13 +1,19 @@
 # simple-router
 The simple router PHP
 
-## include
+## install
+```
+composer require np/router
+```
 ```php
-require_once "router.php";
+require "vender/autoload.php";
 ```
 ## usage
 ```php
+use np\router;
+
 $route = new router;
+
 $route->get('/',function(){
      	echo 'GET method';
 });
