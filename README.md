@@ -6,7 +6,7 @@ The simple router PHP
 composer require np/router
 ```
 ```php
-require "vender/autoload.php";
+require "vendor/autoload.php";
 ```
 ## usage
 ```php
