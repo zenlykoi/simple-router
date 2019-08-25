@@ -2,14 +2,36 @@
     "name": "np/router",
     "description": "The simple router PHP",
     "type": "library",
-    "require": {
-        "n": "0.1.0"
-    },
+    "keywords": [
+        "router",
+        "routing",
+        "lib",
+        "simple-php-router",
+        "simple",
+        "np",
+        "nguyenphuong",
+        "framework",
+        "url-handling",
+        "input-handler",
+        "routing-engine",
+        "request-handler"
+    ],
     "license": "MIT",
     "authors": [
         {
             "name": "Nguyen Phuong",
             "email": "nguyenphuong.2661999@gmail.com"
         }
-    ]
+    ],
+    "support": {
+        "source": "https://github.com/zenlykoi/simple-router-PHP/issues"
+    },
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "np\\": "src/np/"
+        }
+    }
 }
