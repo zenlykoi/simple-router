@@ -50,6 +50,7 @@ class router {
         $this->assignPath();
         $this->assignRequestMethod();
         $this->error = true;
+        $this->middleWare = true;
     }
     /**
      * @name : assignPath
@@ -59,8 +60,7 @@ class router {
      *      - assign path
      */
     private function assignPath(){
-        $this->pathName = $_SERVER['PATH_INFO'];
-        $this->pathName = (!isset($_SERVER['PATH_INFO'])) ? '/' : $this->pathName;
+        $this->pathName = explode('?',$_SERVER['REQUEST_URI'])[0];
         $this->pathName = ($this->pathName[strlen($this->pathName)-1] == '/' && $this->pathName != '/') ? substr($this->pathName,0,strlen($this->pathName)-1) : $this->pathName;
     }
     /**
@@ -95,12 +95,14 @@ class router {
      * @functional :
      *      - define route
      */
-    public function get($path,$callback){
+    public function get($path,$callback,$middleWare = null){
         $this->assignRoutes([
             'method' => 'GET',
             'path' => $path,
-            'callback' => $callback
+            'callback' => $callback,
+            'middleware' => $middleWare
         ]);
+        return $this;
     }
     /**
      * @name : post
@@ -112,12 +114,14 @@ class router {
      * @functional :
      *      - define route
      */
-    public function post($path,$callback){
+    public function post($path,$callback,$middleWare = null){
         $this->assignRoutes([
             'method' => 'POST',
             'path' => $path,
-            'callback' => $callback
+            'callback' => $callback,
+            'middleware' => $middleWare
         ]);
+        return $this;
     }
     /**
      * @name : put
@@ -129,12 +133,14 @@ class router {
      * @functional :
      *      - define route
      */
-    public function put($path,$callback){
+    public function put($path,$callback,$middleWare = null){
         $this->assignRoutes([
             'method' => 'PUT',
             'path' => $path,
-            'callback' => $callback
+            'callback' => $callback,
+            'middleware' => $middleWare
         ]);
+        return $this;
     }
     /**
      * @name : patch
@@ -146,12 +152,14 @@ class router {
      * @functional :
      *      - define route
      */
-    public function patch($path,$callback){
+    public function patch($path,$callback,$middleWare = null){
         $this->assignRoutes([
             'method' => 'PATCH',
             'path' => $path,
-            'callback' => $callback
+            'callback' => $callback,
+            'middleware' => $middleWare
         ]);
+        return $this;
     }
     /**
      * @name : delete
@@ -163,12 +171,14 @@ class router {
      * @functional :
      *      - define route
      */
-    public function delete($path,$callback){
+    public function delete($path,$callback,$middleWare = null){
         $this->assignRoutes([
             'method' => 'DELETE',
             'path' => $path,
-            'callback' => $callback
+            'callback' => $callback,
+            'middleware' => $middleWare
         ]);
+        return $this;
     }
     /**
      * @name : option
@@ -180,12 +190,14 @@ class router {
      * @functional :
      *      - define route
      */
-    public function option($path,$callback){
+    public function option($path,$callback,$middleWare = null){
         $this->assignRoutes([
             'method' => 'OPTION',
             'path' => $path,
-            'callback' => $callback
+            'callback' => $callback,
+            'middleware' => $middleWare
         ]);
+        return $this;
     }
     /**
      * @name : setCallbackError
@@ -256,8 +268,25 @@ class router {
      */
     private function checkRoute($i){
         if($this->routes[$i]['method'] == $this->requestMethod && $this->compareRoute($this->routes[$i]['path'],$this->pathName) != false){
-            $this->routes[$i]['callback']($this->compareRoute($this->routes[$i]['path'],$this->pathName));
-            $this->error = false;
+            if($this->routes[$i]['middleware']){
+                $class2 = explode('@',$this->routes[$i]['middleware'])[0];
+                $method2 = explode('@',$this->routes[$i]['middleware'])[1];
+                $b = new $class2();
+                if($b->$method2()){
+                    $class = explode('@',$this->routes[$i]['callback'])[0];
+                    $method = explode('@',$this->routes[$i]['callback'])[1];
+                    $a = new $class();
+                    $a->$method($this->compareRoute($this->routes[$i]['path'],$this->pathName));
+                    $this->error = false;
+                }
+            }
+            else{
+                $class = explode('@',$this->routes[$i]['callback'])[0];
+                $method = explode('@',$this->routes[$i]['callback'])[1];
+                $a = new $class();
+                $a->$method($this->compareRoute($this->routes[$i]['path'],$this->pathName));
+                $this->error = false;
+            }
         }
     }
     /**
